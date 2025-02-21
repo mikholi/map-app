@@ -30,22 +30,22 @@ export default function BottomNav() {
                 <Tab.Screen
                     name={LOCATIONS}
                     component={LocationsScreen} 
-                    options={{ tabBarIcon: () => <Entypo name="address" size={24} color="black" /> }} 
+                    options={{ tabBarIcon: () => <Entypo name="address" size={26} color="black" /> }} 
                 />
                 <Tab.Screen
                     name={ADDLOCATION}
                     component={AddLocationScreen}
-                    options={{ tabBarIcon: () => <Antdesign name="plus" size={26} /> }} 
+                    options={{ tabBarIcon: () => <Antdesign name="plus" size={28} /> }} 
                 />
                 <Tab.Screen
                     name={MAP}
                     component={MapScreen}
-                    options={{ tabBarIcon: () => <Entypo name="map" size={24} color="black" /> }}
+                    options={{ tabBarIcon: () => <Entypo name="map" size={26} color="black" /> }}
                 />
                 <Tab.Screen
                     name={CAPITALS}
                     component={CapitalsScreen}
-                    options={{ tabBarIcon: () => <FontAwesome5 name="city" size={24} color="black" /> }}
+                    options={{ tabBarIcon: () => <FontAwesome5 name="city" size={25} color="black" /> }}
                 />
             </Tab.Navigator>
         </NavigationContainer>
