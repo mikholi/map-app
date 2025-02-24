@@ -27,7 +27,7 @@ const MapScreen = () => {
     async function search() {
         let coords = await Location.geocodeAsync(place);
         if (coords[0]) {
-            setLocation({ lat: coords[0].latitude, lond: coords[0].longitude});
+            setLocation({ lat: coords[0].latitude, lon: coords[0].longitude});
         } else {
             Alert.alert('Location was not found!');
         
