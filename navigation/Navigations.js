@@ -22,7 +22,6 @@ export default function BottomNav() {
             <Tab.Navigator
                 screenOptions={{
                     tabBarStyle: {
-                        backgroundColor: '#BBDEFB'
                     },
                     animation: 'fade',           
                 }}
