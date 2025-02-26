@@ -17,10 +17,15 @@ const LocationsScreen = () => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={handleLogout} style={{ marginRight: 10 }}>
+        <TouchableOpacity onPress={handleLogout} style={{ marginRight: 20 }}>
           <AntDesign name="logout" size={24} color="black" />
         </TouchableOpacity>
       ),
+      headerLeft: () => (
+        <TouchableOpacity style={{ marginLeft: 20 }}>
+          <AntDesign name="user" size={24} color="black" />
+        </TouchableOpacity>
+      )
     });
   }, [navigation]);
 
