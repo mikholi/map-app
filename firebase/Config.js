@@ -15,5 +15,6 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+export const TODOS_REF = 'todos';
 
 export default app;

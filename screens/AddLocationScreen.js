@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, View, } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Alert, TouchableOpacity } from 'react-native';
 import { addTodo, useFireTodos } from '../firebase/FireStoreController';
 import StarRating from 'react-native-star-rating-widget';
 import { PaperProvider } from 'react-native-paper';
-import { Alert, TextInput, Button, Title, } from 'react-native-paper';
+import { TextInput, Button, Title, } from 'react-native-paper';
 import * as Location from 'expo-location';
+import { useNavigation } from '@react-navigation/native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 function AddLocationScreen () {
+
+  const navigation = useNavigation();
 
     const [todoText, setTodoText] = useState('');
     const [stars, setStars] = useState(0);
@@ -46,6 +50,26 @@ function AddLocationScreen () {
             console.error(error);
         } 
     }
+    const handleLogout = async () => {
+      await AsyncStorage.removeItem('user');
+      await auth.signOut();
+      navigation.navigate('Login');
+    };
+  
+    React.useLayoutEffect(() => {
+      navigation.setOptions({
+        headerRight: () => (
+          <TouchableOpacity onPress={handleLogout} style={{ marginRight: 20 }}>
+            <AntDesign name="logout" size={24} color="black" />
+          </TouchableOpacity>
+        ),
+        headerLeft: () => (
+          <TouchableOpacity style={{ marginLeft: 20 }}>
+            <AntDesign name="user" size={24} color="black" />
+          </TouchableOpacity>
+        )
+      });
+    }, [navigation]);
     return (
 
         <PaperProvider>
@@ -112,6 +136,7 @@ const styles = StyleSheet.create ({
     padding: 8,
     width: '70%',
     alignItems: 'center',
+    backgroundColor: '#21B4DE',
   },
 });
 

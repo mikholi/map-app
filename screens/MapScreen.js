@@ -68,14 +68,15 @@ const styles = StyleSheet.create({
         borderColor: '#fff',
     },
     input: {
-        height: 40,
-        borderColor: 'gray',
-        backgroundColor: '#fff',
-        borderWidth: 2,
-        marginBottom: 10,
-        marginTop: 10,
-        paddingHorizontal: 10,
-        width: '90%',
+        backgroundColor: 'white',
+        padding: 16,
+        marginVertical: 8,
+        borderRadius: 8,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 2,
         
     },
     button: {

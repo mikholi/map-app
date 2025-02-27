@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from '../firebase/Config'; 
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Updated import
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -42,8 +42,10 @@ const LoginScreen = () => {
   if (isLoggedIn) {
     return (
       <View style={styles.container}>
-        <Text>Welcome</Text>
-        <Button title="Logout" onPress={handleLogout} />
+        <Text style={styles.welcometext}>Welcome, you are logged in!</Text>
+        <TouchableOpacity style={styles.buttonContainer} onPress={handleLogout}>
+          <Text style={styles.buttonText}>Logout</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -87,6 +89,28 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 8,
+  },
+  welcometext: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    marginTop: 10,
+    marginBottom: 10,
+    borderRadius: 40,
+    width: 100,
+    padding: 10,
+    backgroundColor: '#21B4DE',
+    elevation: 2,
+    alignItems: 'center',
+    alignSelf: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 20,
   },
 });
 

@@ -2,18 +2,14 @@ import { addDoc, collection, deleteDoc, doc, getDocs, onSnapshot, orderBy, query
 import { useEffect, useState } from "react";
 import { db, TODOS_REF } from "./Config.js";
 
-
-
-
-
 export function useFireTodos() {
     const [todos, setTodos] = useState([]);
 
     useEffect(() => {
         const q = query(collection(db, TODOS_REF), orderBy('todoText'));
 
-        onSnapshot(q, querySnaphot => {
-            setTodos(querySnaphot.docs.map(doc => {
+        onSnapshot(q, querySnapshot => {
+            setTodos(querySnapshot.docs.map(doc => {
                 return { id: doc.id, ...doc.data() }
             }));
         });
@@ -23,8 +19,11 @@ export function useFireTodos() {
 }
 
 export function addTodo(todoText, stars = 0, review, location) {
-    addDoc(collection(db, TODOS_REF), { todoText, stars, review, location: location
-        ? { latitude: location.latitude, longitude: location.longitude }
-        : null, })
-        .catch(error => console.log(error.message));
+    addDoc(collection(db, TODOS_REF), { 
+        todoText, 
+        stars, 
+        review, 
+        location: location ? { latitude: location.latitude, longitude: location.longitude } : null 
+    })
+    .catch(error => console.log(error.message));
 }
