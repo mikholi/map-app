@@ -1,31 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, Text, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { SafeAreaView } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 
 const MapScreen = () => {
-    const [location, setLocation] = useState({ lat: 65.0800, lon: 25.4800 });
+    const route = useRoute();
+    const defaultLocation = { latitude: 65.0800, longitude: 25.4800 };
+    const initialLocation = route.params?.location || defaultLocation;
+    const [location, setLocation] = useState(initialLocation);
     const [place, setPlace] = useState('');
+    const mapRef = useRef(null);
 
     useEffect(() => {
-        getLocation();
-        async function getLocation() {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                console.log('Permission to access location was denied');
-                return;
-            }
-
-            const location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Lowest });
-            setLocation({ lat: location.coords.latitude, lon: location.coords.longitude });
+        if (route.params?.location) {
+            setLocation(route.params.location);
+        } else {
+            getLocation();
         }
-    }, []);
+    }, [route.params?.location]);
+
+    useEffect(() => {
+        if (mapRef.current) {
+            mapRef.current.animateToRegion({
+                latitude: location.latitude,
+                longitude: location.longitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+            });
+        }
+    }, [location]);
+
+    async function getLocation() {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            console.log('Permission to access location was denied');
+            return;
+        }
+
+        const location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Lowest });
+        setLocation({ latitude: location.coords.latitude, longitude: location.coords.longitude });
+    }
 
     async function search() {
         let coords = await Location.geocodeAsync(place);
         if (coords[0]) {
-            setLocation({ lat: coords[0].latitude, lon: coords[0].longitude });
+            setLocation({ latitude: coords[0].latitude, longitude: coords[0].longitude });
         } else {
             Alert.alert('Location was not found!');
         }
@@ -38,20 +59,19 @@ const MapScreen = () => {
                 <Text style={styles.buttonText}>Search</Text>
             </TouchableOpacity>
             <MapView
+                ref={mapRef}
                 style={styles.map}
                 region={{
-                    latitude: location.lat,
-                    longitude: location.lon,
+                    latitude: location.latitude,
+                    longitude: location.longitude,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                 }}
             >
-                {place !== '' &&
-                    <Marker
-                        title={place}
-                        coordinate={{ latitude: location.lat, longitude: location.lon }}
-                    />
-                }
+                <Marker
+                    title={place || 'Selected Location'}
+                    coordinate={{ latitude: location.latitude, longitude: location.longitude }}
+                />
             </MapView>
         </SafeAreaView>
     );
@@ -77,7 +97,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 2,
-        
     },
     button: {
         marginTop: 10,
